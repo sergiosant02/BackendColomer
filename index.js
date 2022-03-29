@@ -13,6 +13,10 @@ app.use(helmet()) // seguridad general en servicios REST
 
 const { initSequelize } = require('./config/sequelize')
 const sequelize = initSequelize()
+console.log('init')
+sequelize.sync({force:true})
+    .then((value) => console.log('Sincronizado', value.json))
+    .catch((err) => console.log(err))
 
 sequelize.authenticate()
   .then(() => {

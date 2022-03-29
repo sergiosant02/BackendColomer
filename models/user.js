@@ -1,3 +1,4 @@
+'use strict'
 const bcrypt = require('bcryptjs')
 const salt = bcrypt.genSaltSync(10)
 const { Model } = require('sequelize')
@@ -10,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate (models) {
       // define association here
-      User.hasMany(models.Restaurant, { foreignKey: 'userId' })
-      User.hasMany(models.Order, { foreignKey: 'userId' })
+      User.hasMany(models.Appointment, { foreignKey: 'userId', as: 'client' })
+      User.hasMany(models.Appointment, { foreignKey: 'userId', as: 'worker' })
     }
   }
   User.init({
@@ -80,7 +81,17 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING,
         unique: true
-    }
+    },
+    createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: new Date()
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: new Date()
+      }
   },
   {
     indexes: [
